@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>svg</title>
+    <style>
+      body {
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .box {
+        display: block;
+        width: 100px;
+        height: 100px;
+        background-color: green;
+      }
+      .text {
+        height: 50px;
+      }
+      .circle {
+        height: 100px;
+      }
+      .psBox {
+        position: absolute;
+        left: 157px;
+        top: 141px;
+        width: 750px;
+        height: 750px;
+        z-index: 1;
+      }
+      .psBoxPath {
+        /* animation: dash 2s linear 3s alternate infinite; */
+      }
+      @keyframes dash {
+          from {
+              stroke-dashoffset: 1655;
+          }
+          to {
+              stroke-dashoffset: 0;
+          }
+      }
+      
+    </style>
+</head>
+
+<body>
+  <div class="box green"></div>
+  <div class="text">
+    <svg>
+      <text x="5" y="30">a text content</text>
+    </svg>
+  </div>
+  <div class="circle">
+    <svg>
+      <circle cx="50" cy="50" r="50" fill="#ccc"></circle>
+    </svg>
+  </div>
+  <div class="path">
+    <svg height="300" width="300">
+      <path d="M 100 100 L 200 200 H 10 V 40 H 70"
+            fill="#59fa81" stroke="#d85b49" stroke-width="3" />
+    </svg>
+  </div>
+  <div class="psBox">
+    <svg 
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    width="576px" height="444px"
+    viewBox="-20, -20, 590, 480"
+    >
+      <path 
+      id="path1"
+      fill-rule="evenodd"  
+      fill="none" 
+      stroke="#000"
+      class="psBoxPath"
+      d="M283.0,95.999 C283.0,95.999 426.859,-51.148 521.999,26.999 C617.140,105.148 557.445,194.187 549.0,221.0 C540.554,247.812 283.0,443.999 283.0,443.999 L96.0,274.0 C96.0,274.0 -77.351,106.984 41.999,32.0 C161.351,-42.984 218.429,30.320 283.0,95.999 Z"/>
+
+      <circle
+        r="20"
+        x="150"
+        y="0"
+        style="fill: #ccc"
+      >
+        <animateMotion
+          dur="10s"
+          repeatCount="indefinite"
+          rotate="auto"
+          begin="click"
+        >
+          <mpath xlink:href="#path1" />
+        </animateMotion>
+      </circle>
+      <text  style="color: red">
+        <textPath xlink:href="#path1" class="linkText">
+          aishitaro aishitaru aishiteru aishiteru
+          aishitaro aishitaru aishiteru aishiteru
+          aishitaro aishitaru aishiteru aishiteru
+          aishitaro aishitaru aishiteru aishiteru
+          aishitaro aishitaru aishiteru aishiteru
+          aishitaro aishitaru aishiteru aishiteru
+        </textPath>
+      </text>
+    </svg>
+  </div>
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <g>
+      <path stroke="red" 
+      stroke-width="13"
+      stroke-linecap="round"
+      stroke-dashoffset="100 50"
+       d="M0 20 l200 0" />
+      <path stroke="green" d="M0 40 l200 0" />
+      <path stroke="blue" d="M0 60 l200 0" />
+    </g>
+  </svg>
+  <svg width="500" height="500">
+    <path d="M100 150 L200 50 L300 150 L400 50 Z"
+      stroke="#ccc" stroke-width="2"
+      fill="none"
+      id="myPath"
+    />
+    <circle r="20" x="150" y="0" style="fill:#336622;">
+      <animateMotion
+      dur="6s"
+      repeatCount="indefinite"
+      rotate="auto">
+        <mpath xlink:href="#myPath" />
+      </animateMotion>
+    </circle>
+  </svg>
+</body>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js" ></script> 
+<script>
+  gsap.to('.box', {
+    x: 200,
+  })
+  let svgMove = function(str) {
+    const path = document.querySelector(`.${str}`);
+
+    // 获取总长度
+    const totalLength = path.getTotalLength();
+    path.style.strokeDasharray = totalLength;
+    path.style.strokeDashoffset = totalLength;
+
+    let currenFtame = 0;
+    let totalFrames = 160;
+    const draw = function () {
+      let progress = currenFtame / totalFrames;
+      if( progress > 1 ) {
+        window.cancelAnimationFrame(handle);
+      } else {
+        currenFtame++;
+
+        path.style.strokeDashoffset = totalLength * (1 - progress);
+        handle = window.requestAnimationFrame(draw);
+      }
+    };
+    draw();
+  }
+  svgMove('psBoxPath');
+  function thisFun() {
+    console.log('this svg event')
+  }
+  
+</script>
+</html>
