@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <title>index</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      .banner ul {
+        display: flex;
+        justify-content: center;
+      }
+      .bannerlist {
+        flex: 1;
+        list-style-type: none;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="head"></div>
+    <div class="main">
+      <div class="banner">
+        <ul></ul>
+      </div>
+    </div>
+    <div id="foot"></div>
+  </body>
+  <script>
+    let TEST_OBJECT = {
+      data: {
+        pageName: 'child',
+        banner: [],
+      },
+      init: function() {
+          $('#head').load('../head.html', () => {
+            this.banner();
+          });
+          $('#foot').load('../foot.html', () => {
+            this.foot();
+          });
+      },
+      banner: function() {
+        let bannerList = this.data.banner;
+        if(bannerList && bannerList != '') {
+          let bannerStr = '';
+          bannerList.forEach((element, index) => {
+            bannerStr += `<li class="bannerlist banner${index}">${element.text}</li>`
+          });
+          $('.banner ul').html(bannerStr);
+        }
+      },
+      foot: function() {
+        let foot = this.data.foot;
+        if(foot && foot != '') {
+          let footStr = `<p class="str">${foot.str}</p><p class="num">${foot.num}</p>`;
+          $('.footList').html(footStr);
+        }
+      },
+    }
+    TEST_OBJECT.data.banner = [
+      {id: 0, text: 'text0', path: ''},
+      {id: 1, text: 'text1', path: ''},
+      {id: 2, text: 'text2', path: ''},
+      {id: 3, text: 'text3', path: ''},
+    ];
+    TEST_OBJECT.data.foot = {
+      str: 'text',
+      num: '123',
+      obj: {
+        aa: 'aa',
+        bb: 'bb'
+      },
+      arr: [
+        1, 2, 3, 4, 5
+      ]
+    }
+    TEST_OBJECT.init();
+  </script>
+</html>

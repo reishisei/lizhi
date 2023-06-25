@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <title>index</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <style>
+        * {
+          padding: 0;
+          margin: 0;
+        }
+        .head {
+            font-size: 24px;
+        }
+        .foot {
+            font-size: 24px;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="head"></div>
+    <div class="main">index</div>
+    <button onclick="toChlid()">button</button>
+    <div id="foot"></div>
+  </body>
+  <script>
+    let TEST_OBJECT = {
+      data: {},
+      init: function() {
+        $('#head').load('head.html');
+        $('#foot').load('foot.html', () => {
+          this.foot();
+        });
+      },
+      foot: function() {
+        let foot = this.data.foot;
+        if(foot && foot != '') {
+          let footStr = `<p class="str">${foot.str}</p><p class="num">${foot.num}</p>`;
+          $('.footList').html(footStr);
+        }
+      },
+    };
+    TEST_OBJECT.data.foot = {
+      str: '首页',
+      num: '123',
+      obj: {
+        aa: 'aa',
+        bb: 'bb'
+      },
+      arr: [
+        1, 2, 3, 4, 5
+      ]
+    }
+    TEST_OBJECT.init()
+    function toChlid () {
+      window.location.href='child/child.html'
+    }
+  </script>
+</html>
